@@ -48,7 +48,18 @@ auth.onAuthStateChanged(function (user) {
 		window.currentUser = user;
 		loginScreen.style.display = 'none';
 		appContainer.style.display = 'block';
-		initAnimation();
+		db.collection('users').doc(user.uid).get().then(function (doc) {
+			if (doc.exists && doc.data().gift) {
+				var gift = doc.data().gift;
+				document.getElementById('gift-emoji').textContent = gift.emoji;
+				document.getElementById('gift-name').textContent = gift.name;
+				document.getElementById('gift-screen').style.display = 'flex';
+			} else {
+				initAnimation();
+			}
+		}).catch(function () {
+			initAnimation();
+		});
 	} else {
 		window.currentUser = null;
 		loginScreen.style.display = 'flex';

@@ -34,6 +34,10 @@ function updateFrame() {
 }
 
 function handleScroll() {
+	var hint = document.getElementById('scroll-hint');
+	if (hint && !hint.classList.contains('hidden')) {
+		hint.classList.add('hidden');
+	}
 	const now = Date.now();
 	if (now - lastScrollTime >= CONFIG.throttleDelay) {
 		lastScrollTime = now;
@@ -54,5 +58,6 @@ async function initAnimation() {
 		AnimationFrame.src = getFramePath(0);
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		updateFrame();
+		document.getElementById('scroll-hint').classList.remove('hidden');
 	}, 500);
 }

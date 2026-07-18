@@ -91,3 +91,75 @@ body {
 #scroll-spacer {
     height: 300vh;
 }
+
+#scroll-hint {
+    position: fixed;
+    bottom: 3vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+#scroll-hint.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scroll-hint-arrow {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-right: 3px solid rgba(0, 0, 0, 0.4);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.4);
+    transform: rotate(45deg);
+    animation: bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(10px); }
+}
+
+#gift-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.gift-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem 3rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    max-width: 90vw;
+}
+
+#gift-emoji {
+    font-size: clamp(3rem, 8vw, 5rem);
+    display: block;
+    margin-bottom: 1rem;
+}
+
+#gift-title {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    color: #888;
+    margin-bottom: 0.3rem;
+}
+
+#gift-name {
+    font-size: clamp(1.3rem, 2vw, 1.6rem);
+    font-weight: 700;
+    color: #333;
+}

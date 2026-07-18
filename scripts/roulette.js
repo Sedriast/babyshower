@@ -132,12 +132,21 @@ function saveGift(gift) {
     if (!window.currentUser) return;
 
     db.collection('users').doc(window.currentUser.uid).set({
+        displayName: window.currentUser.displayName,
+        email: window.currentUser.email,
         gift: { id: gift.id, name: gift.name, emoji: gift.emoji },
         confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
     }, { merge: true }).then(function () {
         document.getElementById('result-saved').textContent = 'Guardado correctamente';
-    }).catch(function () {
-        document.getElementById('result-saved').textContent = 'Error al guardar';
+    }).catch(function (error) {
+        console.error('Error guardando regalo:', error);
+        var msg = 'Error al guardar. Intenta de nuevo.';
+        if (error.code === 'permission-denied' || (error.message && error.message.includes('permission'))) {
+            msg = 'No tienes permiso para guardar.';
+        } else if (error.message && (error.message.includes('network') || error.message.includes('ERR_BLOCKED') || error.message.includes('Failed'))) {
+            msg = 'No se pudo guardar. Desactiva tu bloqueador de anuncios e intenta de nuevo.';
+        }
+        document.getElementById('result-saved').textContent = msg;
     });
 }
 

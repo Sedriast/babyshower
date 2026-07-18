@@ -23,12 +23,22 @@
 		</div>
 
 		<div id='app' style='display:none'>
+			<div id='gift-screen' style='display:none'>
+				<div class='gift-card'>
+					<span id='gift-emoji'></span>
+					<p id='gift-title'>Tu regalo es:</p>
+					<p id='gift-name'></p>
+				</div>
+			</div>
 			<header id='loading-screen'>
 				<span class='loader'></span>
 				<span class='loading-text'>Cargando...</span>
 			</header>
 			<div id='animation-container'>
 				<img id='animation-frame' src='' alt='Animation'>
+			</div>
+			<div id='scroll-hint' class='hidden'>
+				<span class='scroll-hint-arrow'></span>
 			</div>
 			<div id='scroll-spacer'></div>
 
