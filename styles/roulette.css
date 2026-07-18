@@ -71,7 +71,40 @@
 #roulette-canvas {
     max-width: min(80vw, 80vh);
     max-height: min(80vw, 80vh);
+}
+
+#roulette-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 1.5rem;
+}
+
+#roulette-pointer {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 24px solid #c0392b;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+    z-index: 2;
+}
+
+#roulette-pointer::after {
+    content: '';
+    position: absolute;
+    top: -27px;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 18px solid #e74c3c;
 }
 
 #spin-btn {

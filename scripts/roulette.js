@@ -16,7 +16,6 @@ function initRoulette() {
 
     document.getElementById('confirm-btn').addEventListener('click', openRoulette);
     document.getElementById('spin-btn').addEventListener('click', spinRoulette);
-    document.getElementById('result-close').addEventListener('click', closeResult);
 
     window.addEventListener('animationComplete', function () {
         document.getElementById('confirm-section').classList.add('visible');
@@ -117,15 +116,7 @@ function spinRoulette() {
 }
 
 function showResult(gift) {
-    document.getElementById('result-emoji').textContent = gift.emoji;
-    document.getElementById('result-text').textContent = gift.name;
-    document.getElementById('roulette-result').classList.add('visible');
-    document.getElementById('result-saved').textContent = '';
     saveGift(gift);
-}
-
-function closeResult() {
-    document.getElementById('roulette-result').classList.remove('visible');
 }
 
 function saveGift(gift) {
@@ -137,7 +128,10 @@ function saveGift(gift) {
         gift: { id: gift.id, name: gift.name, emoji: gift.emoji },
         confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
     }, { merge: true }).then(function () {
-        document.getElementById('result-saved').textContent = 'Guardado correctamente';
+        document.getElementById('roulette-screen').classList.remove('visible');
+        document.getElementById('gift-emoji').textContent = gift.emoji;
+        document.getElementById('gift-name').textContent = gift.name;
+        document.getElementById('gift-screen').style.display = 'flex';
     }).catch(function (error) {
         console.error('Error guardando regalo:', error);
         var msg = 'Error al guardar. Intenta de nuevo.';
@@ -146,7 +140,7 @@ function saveGift(gift) {
         } else if (error.message && (error.message.includes('network') || error.message.includes('ERR_BLOCKED') || error.message.includes('Failed'))) {
             msg = 'No se pudo guardar. Desactiva tu bloqueador de anuncios e intenta de nuevo.';
         }
-        document.getElementById('result-saved').textContent = msg;
+        alert(msg);
     });
 }
 
