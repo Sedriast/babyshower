@@ -89,19 +89,23 @@ body {
 }
 
 #scroll-spacer {
-    height: 300vh;
+    height: 600vh;
 }
 
 #scroll-hint {
     position: fixed;
-    bottom: 3vh;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 6;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
     opacity: 1;
-    transition: opacity 0.5s ease;
+    transition: opacity 0.6s ease;
+    background: rgba(228, 224, 219, 0.85);
 }
 
 #scroll-hint.hidden {
@@ -109,19 +113,81 @@ body {
     pointer-events: none;
 }
 
-.scroll-hint-arrow {
-    display: block;
-    width: 24px;
-    height: 24px;
-    border-right: 3px solid rgba(0, 0, 0, 0.4);
-    border-bottom: 3px solid rgba(0, 0, 0, 0.4);
-    transform: rotate(45deg);
-    animation: bounce 1.5s ease-in-out infinite;
+.scroll-phone {
+    position: relative;
+    width: clamp(80px, 18vw, 120px);
+    height: clamp(140px, 32vw, 210px);
+    border: 3px solid #444;
+    border-radius: 16px;
+    background: #fff;
+    overflow: hidden;
 }
 
-@keyframes bounce {
-    0%, 100% { transform: rotate(45deg) translateY(0); }
-    50% { transform: rotate(45deg) translateY(10px); }
+.scroll-phone-notch {
+    width: 35%;
+    height: 6px;
+    background: #444;
+    border-radius: 0 0 4px 4px;
+    margin: 0 auto;
+}
+
+.scroll-phone-screen {
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.scroll-content-line {
+    width: 100%;
+    height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+}
+
+.scroll-content-line.short {
+    width: 60%;
+}
+
+.scroll-finger {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    width: clamp(22px, 5vw, 32px);
+    height: clamp(30px, 7vw, 44px);
+    background: #f0c9a0;
+    border: 2px solid #d4a574;
+    border-radius: 50% 50% 45% 45%;
+    transform: translateX(-50%);
+    animation: swipe 1.8s ease-in-out infinite;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-text {
+    margin-top: 1.5rem;
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    font-weight: 600;
+    color: #444;
+    text-align: center;
+}
+
+@keyframes swipe {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    40% {
+        transform: translateX(-50%) translateY(-55px);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(-50%) translateY(-55px);
+        opacity: 0.7;
+    }
+    55% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
 }
 
 #gift-screen {
