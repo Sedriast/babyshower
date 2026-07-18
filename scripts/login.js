@@ -54,11 +54,30 @@ auth.onAuthStateChanged(function (user) {
 				document.getElementById('gift-emoji').textContent = gift.emoji;
 				document.getElementById('gift-name').textContent = gift.name;
 				document.getElementById('gift-screen').style.display = 'flex';
+				document.body.style.overflow = 'hidden';
+				document.getElementById('animation-container').style.display = 'none';
+				document.getElementById('scroll-spacer').style.display = 'none';
+				document.getElementById('scroll-hint').style.display = 'none';
 			} else {
 				initAnimation();
 			}
 		}).catch(function () {
-			initAnimation();
+			db.collection('users').doc(user.uid).get().then(function (doc) {
+				if (doc.exists && doc.data().gift) {
+					var gift = doc.data().gift;
+					document.getElementById('gift-emoji').textContent = gift.emoji;
+					document.getElementById('gift-name').textContent = gift.name;
+					document.getElementById('gift-screen').style.display = 'flex';
+					document.body.style.overflow = 'hidden';
+					document.getElementById('animation-container').style.display = 'none';
+					document.getElementById('scroll-spacer').style.display = 'none';
+					document.getElementById('scroll-hint').style.display = 'none';
+				} else {
+					initAnimation();
+				}
+			}).catch(function () {
+				initAnimation();
+			});
 		});
 	} else {
 		window.currentUser = null;
