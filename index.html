@@ -1,372 +1,61 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baby Shower - Nicolás</title>
-    <!-- Fuentes de Google Fonts para simular la tipografía de la imagen -->
-    <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Dancing+Script:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome para los íconos de abajo -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --color-fondo: #FDF5E6; /* Crema */
-            --color-azul: #5C8EBC;
-            --color-azul-oscuro: #1A4B7C;
-            --color-rojo: #D63D39;
-            --color-texto: #1C3144;
-        }
+﻿<!DOCTYPE html>
+<html lang='es'>
+	<head>
+		<meta charset='UTF-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+		<title>Sedriast´s portafolio</title>
+		<link rel='stylesheet' href='styles/login.css'>
+		<link rel='stylesheet' href='styles/main.css'>
+		<link rel='stylesheet' href='styles/roulette.css'>
+	</head>
+	<body>
+		<div id='login-screen'>
+			<button id='google-login-btn'>
+				<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+					<path d='M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z' fill='#4285F4'/>
+					<path d='M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z' fill='#34A853'/>
+					<path d='M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z' fill='#FBBC05'/>
+					<path d='M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z' fill='#EA4335'/>
+				</svg>
+				Iniciar sesión con Google
+			</button>
+			<span id='login-error'></span>
+		</div>
 
-        body {
-            background-color: #f0f0f0;
-            font-family: 'Quicksand', sans-serif;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+		<div id='app' style='display:none'>
+			<header id='loading-screen'>
+				<span class='loader'></span>
+				<span class='loading-text'>Cargando...</span>
+			</header>
+			<div id='animation-container'>
+				<img id='animation-frame' src='' alt='Animation'>
+			</div>
+			<div id='scroll-spacer'></div>
 
-        /* --- ESTILOS DE LA INVITACIÓN --- */
-        .invitacion-container {
-            background-color: var(--color-fondo);
-            border: 2px dashed #D1A384;
-            border-radius: 20px;
-            max-width: 450px;
-            width: 100%;
-            padding: 30px 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            text-align: center;
-            position: relative;
-            box-sizing: border-box;
-            background-image: radial-gradient(#D1A384 1px, transparent 1px);
-            background-size: 20px 20px;
-            background-position: -10px -10px;
-        }
+			<div id='confirm-section'>
+				<button id='confirm-btn'>Confirmar asistencia</button>
+			</div>
 
-        .invitacion-container > * {
-            background-color: var(--color-fondo); /* Tapa los puntos de fondo detrás del texto */
-            padding: 5px;
-            border-radius: 10px;
-        }
+			<div id='roulette-screen'>
+				<canvas id='roulette-canvas'></canvas>
+				<button id='spin-btn'>Girar</button>
+				<div id='roulette-result'>
+					<div class='result-card'>
+						<span id='result-emoji'></span>
+						<p id='result-title'>Obtuviste:</p>
+						<p id='result-text'></p>
+						<p id='result-saved'></p>
+						<button id='result-close'>Cerrar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-        .cursive-title {
-            font-family: 'Dancing Script', cursive;
-            color: var(--color-azul-oscuro);
-            font-size: 2.2rem;
-            margin: 0;
-        }
-
-        .banner-invitan {
-            background-color: var(--color-azul);
-            color: white;
-            display: inline-block;
-            padding: 5px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin: 10px 0;
-            position: relative;
-        }
-
-        .banner-baby-shower {
-            background-color: var(--color-azul);
-            color: white;
-            font-family: 'Chewy', cursive;
-            font-size: 3.5rem;
-            padding: 10px 30px;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
-            transform: rotate(-2deg);
-            border: 2px dashed white;
-        }
-
-        .texto-intro {
-            color: var(--color-rojo);
-            font-size: 1.1rem;
-            margin: 15px 0 5px;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
-        }
-        
-        .texto-intro span {
-            color: var(--color-azul-oscuro);
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1.1rem;
-            display: block;
-        }
-
-        .nombre-bebe {
-            font-family: 'Chewy', cursive;
-            color: var(--color-azul-oscuro);
-            font-size: 3.5rem;
-            margin: -10px 0 20px 0;
-        }
-
-        .imagen-central {
-            width: 100%;
-            max-width: 350px;
-            margin: 10px 0;
-            /* Aquí va la imagen recortada del camión */
-        }
-
-        /* Cuadrícula de información */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.9rem;
-            color: var(--color-rojo);
-            font-weight: bold;
-        }
-
-        .info-item i {
-            font-size: 2rem;
-            color: var(--color-azul);
-            margin-bottom: 5px;
-        }
-        
-        .info-item span {
-            color: var(--color-azul-oscuro);
-            font-weight: normal;
-        }
-
-        .footer-text {
-            font-family: 'Dancing Script', cursive;
-            color: var(--color-azul-oscuro);
-            font-size: 1.8rem;
-            margin-top: 20px;
-            background-color: var(--color-azul);
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-
-        /* --- ESTILOS DE LA RULETA --- */
-        .ruleta-section {
-            margin-top: 40px;
-            text-align: center;
-            background-color: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            max-width: 450px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .ruleta-section h2 {
-            font-family: 'Chewy', cursive;
-            color: var(--color-azul-oscuro);
-            font-size: 2rem;
-            margin-top: 0;
-        }
-
-        .ruleta-container {
-            position: relative;
-            width: 280px;
-            height: 280px;
-            margin: 20px auto;
-        }
-
-        .ruleta {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 5px solid var(--color-azul-oscuro);
-            overflow: hidden;
-            position: relative;
-            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            /* Los colores se generan por JS */
-        }
-
-        .puntero {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 30px solid var(--color-rojo);
-            z-index: 10;
-        }
-
-        .btn-girar {
-            background-color: var(--color-rojo);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.2rem;
-            font-family: 'Quicksand', sans-serif;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 5px 10px rgba(214, 61, 57, 0.4);
-            transition: transform 0.2s;
-        }
-
-        .btn-girar:active {
-            transform: scale(0.95);
-        }
-
-        .resultado-regalo {
-            margin-top: 20px;
-            font-size: 1.5rem;
-            font-family: 'Chewy', cursive;
-            color: var(--color-azul);
-            min-height: 30px;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- TARJETA DE INVITACIÓN -->
-    <div class="invitacion-container">
-        <p class="cursive-title">♥ Mis papitos ♥</p>
-        
-        <div class="banner-invitan">
-            ♥ INVITAN ♥<br><small>• A MI •</small>
-        </div>
-
-        <div class="banner-baby-shower">
-            Baby Shower
-        </div>
-
-        <p class="texto-intro">
-            Con mucha ilusión y amor,<br>
-            <span>te invitamos a celebrar<br>la dulce espera de nuestro</span>
-        </p>
-        
-        <p class="nombre-bebe">pequeño Nicolás.</p>
-
-        <!-- REEMPLAZA ESTA IMAGEN CON EL CAMIÓN RECORTADO -->
-        <img src="https://i.ibb.co/3s8pZ4m/placeholder-camion.png" alt="Camioncito con Osito" class="imagen-central">
-
-        <div class="info-grid">
-            <div class="info-item">
-                <i class="fa-regular fa-calendar-heart"></i>
-                FECHA<br><span>15 de agosto</span>
-            </div>
-            <div class="info-item">
-                <i class="fa-regular fa-clock"></i>
-                HORA<br><span>2:00 p.m.</span>
-            </div>
-            <div class="info-item">
-                <i class="fa-solid fa-house-chimney"></i>
-                LUGAR<br><span>Casa Estadio</span>
-            </div>
-            <div class="info-item">
-                <i class="fa-regular fa-envelope"></i>
-                CONFIRMAR<br><span>ASISTENCIA</span>
-            </div>
-        </div>
-
-        <div class="footer-text">
-            ♥ ¡Te esperamos! ♥
-        </div>
-    </div>
-
-    <!-- SECCIÓN DE LA RULETA -->
-    <div class="ruleta-section">
-        <h2>¿Qué regalo llevar?</h2>
-        <p>Gira la ruleta para descubrir tu sugerencia de regalo</p>
-        
-        <div class="ruleta-container">
-            <div class="puntero"></div>
-            <div class="ruleta" id="ruleta"></div>
-        </div>
-
-        <button class="btn-girar" id="btn-girar" onclick="girarRuleta()">¡GIRAR RULETA!</button>
-        <div class="resultado-regalo" id="resultado-texto"></div>
-    </div>
-
-    <!-- JAVASCRIPT PARA LA RULETA -->
-    <script>
-        // Lista de regalos (puedes modificarla)
-        const regalos = [
-            "Pañales Etapa 1",
-            "Pañales Etapa 2",
-            "Toallitas Húmedas",
-            "Ropita (0-3 meses)",
-            "Juguete didáctico",
-            "Artículos de aseo"
-        ];
-        
-        // Colores para las secciones de la ruleta
-        const colores = ['#5C8EBC', '#D63D39', '#F4A261', '#2A9D8F', '#E76F51', '#E9C46A'];
-
-        const ruletaElement = document.getElementById('ruleta');
-        const resultadoTexto = document.getElementById('resultado-texto');
-        let rotacionActual = 0;
-
-        // Función para dibujar la ruleta con CSS (conic-gradient)
-        function dibujarRuleta() {
-            let gradiente = 'conic-gradient(';
-            let anguloPorOpcion = 360 / regalos.length;
-
-            regalos.forEach((regalo, index) => {
-                let inicio = index * anguloPorOpcion;
-                let fin = inicio + anguloPorOpcion;
-                gradiente += `${colores[index]} ${inicio}deg ${fin}deg${index < regalos.length - 1 ? ', ' : ''}`;
-            });
-
-            gradiente += ')';
-            ruletaElement.style.background = gradiente;
-            
-            // Añadir etiquetas de texto (opcional y complejo por CSS puro rotado, lo simularemos con leyenda o el resultado al final)
-        }
-
-        dibujarRuleta();
-
-        function girarRuleta() {
-            // Deshabilitar botón mientras gira
-            document.getElementById('btn-girar').disabled = true;
-            resultadoTexto.innerHTML = "Girando...";
-
-            // Calcular rotación aleatoria (entre 5 y 10 vueltas + un grado aleatorio)
-            const vueltas = Math.floor(Math.random() * 5) + 5;
-            const gradosExtra = Math.floor(Math.random() * 360);
-            const rotacionTotal = (vueltas * 360) + gradosExtra;
-            
-            rotacionActual += rotacionTotal; // Sumar a la rotación actual para que no se devuelva
-            
-            ruletaElement.style.transform = `rotate(${rotacionActual}deg)`;
-
-            // Esperar a que termine la animación (4 segundos) para mostrar el resultado
-            setTimeout(() => {
-                // Calcular qué opción quedó arriba
-                // El puntero está en 0 grados (arriba). La ruleta gira en sentido horario.
-                const gradosNormalizados = rotacionActual % 360;
-                
-                // La fórmula para encontrar el ganador basándose en el giro y la posición inicial
-                const anguloPorOpcion = 360 / regalos.length;
-                
-                // Calculamos el índice inverso porque la ruleta gira hacia adelante
-                const indiceGanador = Math.floor(((360 - gradosNormalizados) % 360) / anguloPorOpcion);
-                
-                const regaloGanador = regalos[indiceGanador];
-                resultadoTexto.innerHTML = `¡Te tocó llevar: <strong>${regaloGanador}</strong>! 🎁`;
-                
-                // Habilitar botón de nuevo
-                document.getElementById('btn-girar').disabled = false;
-                
-                // Lanzar un pequeño confeti usando un alert o animación simple
-                // Aquí solo mostramos el texto
-            }, 4000); 
-        }
-    </script>
-</body>
+		<script src='https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js'></script>
+		<script src='https://www.gstatic.com/firebasejs/11.6.0/firebase-auth-compat.js'></script>
+		<script src='https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js'></script>
+		<script src='scripts/login.js'></script>
+		<script src='scripts/main.js'></script>
+		<script src='scripts/roulette.js'></script>
+	</body>
 </html>
