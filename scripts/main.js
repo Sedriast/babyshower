@@ -6,6 +6,8 @@
 let currentFrame = 0, lastScrollTime = 0, imageCache = [];
 let AnimationFrame, loadingScreen, loadingText;
 
+window.preloadPromise = preloadImages();
+
 function getFramePath(index) {
 	return CONFIG.framesPath + (index + 1).toString().padStart(4, '0') + '.webp';
 }
@@ -50,8 +52,9 @@ async function initAnimation() {
 	loadingScreen = document.getElementById('loading-screen');
 	loadingText = document.querySelector('.loading-text');
 
+	loadingScreen.style.display = 'flex';
 	loadingText.textContent = 'Cargando...';
-	await preloadImages();
+	await window.preloadPromise;
 	loadingText.textContent = 'Listo';
 	setTimeout(function () {
 		loadingScreen.classList.add('hidden');
