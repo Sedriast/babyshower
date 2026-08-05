@@ -3,6 +3,7 @@
 	framesPath: 'assets/frames/',
 	throttleDelay: 30
 };
+const CONFIRM_FRAME_INDEX = 264;
 let currentFrame = 0, lastScrollTime = 0, imageCache = [];
 let AnimationFrame, loadingScreen, loadingText;
 
@@ -30,8 +31,11 @@ function updateFrame() {
 		currentFrame = targetFrame;
 		AnimationFrame.src = getFramePath(currentFrame);
 	}
-	if (currentFrame === CONFIG.totalFrames - 1) {
-		window.dispatchEvent(new CustomEvent('animationComplete'));
+	const confirmSection = document.getElementById('confirm-section');
+	if (currentFrame >= CONFIRM_FRAME_INDEX) {
+		confirmSection.classList.add('visible');
+	} else {
+		confirmSection.classList.remove('visible');
 	}
 }
 

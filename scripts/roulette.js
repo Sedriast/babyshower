@@ -18,10 +18,6 @@ function initRoulette() {
 
     document.getElementById('confirm-btn').addEventListener('click', openRoulette);
     document.getElementById('spin-btn').addEventListener('click', spinRoulette);
-
-    window.addEventListener('animationComplete', function () {
-        document.getElementById('confirm-section').classList.add('visible');
-    });
 }
 
 function buildSlots() {
