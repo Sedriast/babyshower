@@ -1,4 +1,6 @@
 let gifts = [];
+let slots = [];
+let inventory = {};
 let isSpinning = false;
 
 const COLORS = [
@@ -11,7 +13,7 @@ function initRoulette() {
         .then(function (res) { return res.json(); })
         .then(function (data) {
             gifts = data;
-            drawRoulette();
+            refreshRoulette();
         });
 
     document.getElementById('confirm-btn').addEventListener('click', openRoulette);
@@ -22,10 +24,48 @@ function initRoulette() {
     });
 }
 
+function buildSlots() {
+    slots = [];
+    gifts.forEach(function (gift) {
+        var remaining = inventory[gift.id] !== undefined ? inventory[gift.id] : gift.count;
+        if (remaining < 0) remaining = 0;
+        for (var i = 0; i < remaining; i++) {
+            slots.push({ gift: gift });
+        }
+    });
+}
+
+function loadInventory() {
+    var counts = {};
+    return Promise.all(gifts.map(function (gift) {
+        var ref = db.collection('giftInventory').doc(String(gift.id));
+        return ref.get().then(function (doc) {
+            if (doc.exists && typeof doc.data().remaining === 'number') {
+                counts[gift.id] = doc.data().remaining;
+            } else {
+                return ref.set({ name: gift.name, remaining: gift.count }).then(function () {
+                    counts[gift.id] = gift.count;
+                });
+            }
+        }).catch(function () {
+            counts[gift.id] = gift.count;
+        });
+    })).then(function () {
+        inventory = counts;
+    });
+}
+
+function refreshRoulette() {
+    return loadInventory().then(function () {
+        buildSlots();
+        drawRoulette();
+    });
+}
+
 function openRoulette() {
     document.getElementById('confirm-section').classList.remove('visible');
     document.getElementById('roulette-screen').classList.add('visible');
-    drawRoulette();
+    refreshRoulette();
 }
 
 function drawRoulette() {
@@ -40,11 +80,13 @@ function drawRoulette() {
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
     const radius = (canvas.width / 2) - 10;
-    const sliceAngle = (2 * Math.PI) / gifts.length;
+    const count = slots.length;
+    const sliceAngle = (2 * Math.PI) / count;
 
-    for (let i = 0; i < gifts.length; i++) {
+    for (let i = 0; i < count; i++) {
         const startAngle = i * sliceAngle - Math.PI / 2;
         const endAngle = startAngle + sliceAngle;
+        const gift = slots[i].gift;
 
         ctx.beginPath();
         ctx.moveTo(cx, cy);
@@ -62,9 +104,9 @@ function drawRoulette() {
         ctx.textAlign = 'center';
         ctx.fillStyle = '#333';
         ctx.font = 'bold ' + (size / 18) + 'px sans-serif';
-        ctx.fillText(gifts[i].emoji, radius * 0.65, -2);
+        ctx.fillText(gift.emoji, radius * 0.65, -2);
         ctx.font = (size / 26) + 'px sans-serif';
-        ctx.fillText(gifts[i].name, radius * 0.65, size / 20);
+        ctx.fillText(gift.name, radius * 0.65, size / 20);
         ctx.restore();
     }
 
@@ -78,7 +120,7 @@ function drawRoulette() {
 }
 
 function spinRoulette() {
-    if (isSpinning || gifts.length === 0) return;
+    if (isSpinning || slots.length === 0) return;
     isSpinning = true;
 
     var spinBtn = document.getElementById('spin-btn');
@@ -86,8 +128,8 @@ function spinRoulette() {
 
     var canvas = document.getElementById('roulette-canvas');
     var totalRotation = (3 + Math.random() * 3) * 2 * Math.PI;
-    var winnerIndex = Math.floor(Math.random() * gifts.length);
-    var sliceAngle = (2 * Math.PI) / gifts.length;
+    var winnerIndex = Math.floor(Math.random() * slots.length);
+    var sliceAngle = (2 * Math.PI) / slots.length;
     var targetAngle = totalRotation + (2 * Math.PI - winnerIndex * sliceAngle - sliceAngle / 2);
 
     var startTime = null;
@@ -108,7 +150,7 @@ function spinRoulette() {
         } else {
             isSpinning = false;
             spinBtn.disabled = false;
-            showResult(gifts[winnerIndex]);
+            showResult(slots[winnerIndex].gift);
         }
     }
 
@@ -122,25 +164,46 @@ function showResult(gift) {
 function saveGift(gift) {
     if (!window.currentUser) return;
 
-    db.collection('users').doc(window.currentUser.uid).set({
-        displayName: window.currentUser.displayName,
-        email: window.currentUser.email,
-        gift: { id: gift.id, name: gift.name, emoji: gift.emoji },
-        confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true }).then(function () {
+    var userRef = db.collection('users').doc(window.currentUser.uid);
+    var inventoryRef = db.collection('giftInventory').doc(String(gift.id));
+
+    db.runTransaction(function (transaction) {
+        return transaction.get(inventoryRef).then(function (doc) {
+            var remaining = doc.exists && typeof doc.data().remaining === 'number' ? doc.data().remaining : gift.count;
+            if (remaining <= 0) {
+                throw { giftExhausted: true };
+            }
+            transaction.update(inventoryRef, { remaining: remaining - 1 });
+            transaction.set(userRef, {
+                displayName: window.currentUser.displayName,
+                email: window.currentUser.email,
+                gift: { id: gift.id, name: gift.name, emoji: gift.emoji },
+                confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            return { remaining: remaining - 1 };
+        });
+    }).then(function (result) {
+        inventory[gift.id] = result.remaining;
+        buildSlots();
         document.getElementById('roulette-screen').classList.remove('visible');
         document.getElementById('gift-emoji').textContent = gift.emoji;
         document.getElementById('gift-name').textContent = gift.name;
         document.getElementById('gift-screen').style.display = 'flex';
     }).catch(function (error) {
+        if (error && error.giftExhausted) {
+            alert('Ese regalo ya se agotó. Vuelve a girar.');
+            refreshRoulette();
+            return;
+        }
         console.error('Error guardando regalo:', error);
         var msg = 'Error al guardar. Intenta de nuevo.';
         if (error.code === 'permission-denied' || (error.message && error.message.includes('permission'))) {
             msg = 'No tienes permiso para guardar.';
-        } else if (error.message && (error.message.includes('network') || error.message.includes('ERR_BLOCKED') || error.message.includes('Failed'))) {
-            msg = 'No se pudo guardar. Desactiva tu bloqueador de anuncios e intenta de nuevo.';
+        } else if (error.message && (error.message.includes('network') || error.message.includes('ERR_BLOCKED') || error.message.includes('Failed') || error.message.includes('transaction'))) {
+            msg = 'No se pudo confirmar. Reintenta girar (el regalo puede haberse agotado).';
         }
         alert(msg);
+        refreshRoulette();
     });
 }
 

@@ -1,10 +1,15 @@
 [
-	{ "id": 1, "name": "Osito de peluche", "emoji": "\uD83E\uDDF8" },
-	{ "id": 2, "name": "Manta personalizada", "emoji": "\uD83D\uDECF\uFE0F" },
-	{ "id": 3, "name": "Kit de higiene bebé", "emoji": "\uD83E\uDDF4" },
-	{ "id": 4, "name": "Romppecabezas educativo", "emoji": "\uD83E\uDDE9" },
-	{ "id": 5, "name": "Cuenta de ahorros", "emoji": "\uD83D\uDCB0" },
-	{ "id": 6, "name": "Sets de ropa", "emoji": "\uD83D\uDC76" },
-	{ "id": 7, "name": "Cochecito de juguete", "emoji": "\uD83A\uDE80" },
-	{ "id": 8, "name": "Libro de cuentos", "emoji": "\uD83D\uDCDA" }
+	{ "id": 1, "name": "Pañal etapa 2 + pañitos", "emoji": "\uD83D\uDC76", "count": 3 },
+	{ "id": 2, "name": "Pañal etapa 3 + pañitos", "emoji": "\uD83C\uDF7C", "count": 5 },
+	{ "id": 3, "name": "Pañal etapa 4 + pañitos", "emoji": "\uD83E\uDDF7", "count": 3 },
+	{ "id": 4, "name": "Bañera", "emoji": "\uD83D\uDEC1", "count": 1 },
+	{ "id": 5, "name": "Pijama 3 a 6 meses + medias", "emoji": "\uD83E\uDDE6", "count": 1 },
+	{ "id": 6, "name": "Pijama 6 a 12 meses + medias", "emoji": "\uD83C\uDF19", "count": 2 },
+	{ "id": 7, "name": "Juego de toallas", "emoji": "\uD83E\uDDFB", "count": 2 },
+	{ "id": 8, "name": "Cobija gruesa o térmica", "emoji": "\uD83E\uDDE3", "count": 1 },
+	{ "id": 9, "name": "Cobija delgada", "emoji": "\uD83D\uDECF", "count": 2 },
+	{ "id": 10, "name": "Kit de aseo para bebé + babero", "emoji": "\uD83E\uDDF4", "count": 2 },
+	{ "id": 11, "name": "Ropa 3 a 6 meses", "emoji": "\uD83D\uDC55", "count": 1 },
+	{ "id": 12, "name": "Ropa 6 a 9 meses", "emoji": "\uD83D\uDC5A", "count": 1 },
+	{ "id": 13, "name": "Ropa 9 a 12 meses", "emoji": "\uD83E\uDDE5", "count": 1 }
 ]

@@ -229,3 +229,48 @@ body {
     font-weight: 700;
     color: #333;
 }
+
+#event-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.4rem 1.5rem 2rem;
+}
+
+.event-detail {
+    max-width: 90vw;
+    text-align: center;
+    font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+    font-weight: 600;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+#maps-btn {
+    display: inline-block;
+    padding: 0.7rem 2rem;
+    font-size: clamp(0.95rem, 2vw, 1.05rem);
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    border-radius: 50px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#maps-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+}
+
+#maps-btn:active {
+    transform: scale(0.98);
+}
