@@ -198,8 +198,11 @@ body {
     height: 100vh;
     background: var(--background);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem;
     z-index: 9999;
 }
 
@@ -231,44 +234,61 @@ body {
 }
 
 #event-info {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.4rem 1.5rem 2rem;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 440px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 1.5rem 1.75rem 1.75rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.event-heading {
+    font-size: clamp(0.85rem, 2vw, 1rem);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #a18cd1;
+    margin-bottom: 0.1rem;
 }
 
 .event-detail {
-    max-width: 90vw;
-    text-align: center;
     font-size: clamp(0.95rem, 2.5vw, 1.15rem);
     font-weight: 600;
     color: #444;
     line-height: 1.5;
-    margin-bottom: 1rem;
 }
 
 #maps-btn {
-    display: inline-block;
-    padding: 0.7rem 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    padding: 0.75rem 1.75rem;
     font-size: clamp(0.95rem, 2vw, 1.05rem);
     font-weight: 600;
     color: #fff;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+    background: linear-gradient(135deg, #34a853 0%, #1b8a3e 100%);
+    box-shadow: 0 4px 20px rgba(52, 168, 83, 0.4);
     border-radius: 50px;
     text-decoration: none;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.maps-btn-icon {
+    width: 1.1em;
+    height: 1.1em;
+    flex-shrink: 0;
+}
+
 #maps-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 30px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 6px 30px rgba(52, 168, 83, 0.6);
 }
 
 #maps-btn:active {

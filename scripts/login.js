@@ -12,6 +12,14 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const provider = new firebase.auth.GoogleAuthProvider();
 
+const ADMIN_UIDS = [
+	"ISEQkwhDvJTaIVE9Etdc66y5EAM2",
+	"kyHNWfYueQVNxnJp9BvrcbIFedE2",
+	"0QP3T1hDTMSGHFqGscArHnhPxn23"
+];
+window.ADMIN_UIDS = ADMIN_UIDS;
+window.isAdmin = false;
+
 const loginScreen = document.getElementById('login-screen');
 const appContainer = document.getElementById('app');
 const googleLoginBtn = document.getElementById('google-login-btn');
@@ -46,8 +54,11 @@ function saveUserData(user) {
 auth.onAuthStateChanged(function (user) {
 	if (user) {
 		window.currentUser = user;
+		window.isAdmin = ADMIN_UIDS.indexOf(user.uid) !== -1;
 		loginScreen.style.display = 'none';
 		appContainer.style.display = 'block';
+		var adminBtn = document.getElementById('admin-btn');
+		if (adminBtn) adminBtn.style.display = window.isAdmin ? 'flex' : 'none';
 		db.collection('users').doc(user.uid).get().then(function (doc) {
 			if (doc.exists && doc.data().gift) {
 				var gift = doc.data().gift;
@@ -81,6 +92,7 @@ auth.onAuthStateChanged(function (user) {
 		});
 	} else {
 		window.currentUser = null;
+		window.isAdmin = false;
 		loginScreen.style.display = 'flex';
 		appContainer.style.display = 'none';
 	}

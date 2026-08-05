@@ -61,6 +61,13 @@ function refreshRoulette() {
 function openRoulette() {
     document.getElementById('confirm-section').classList.remove('visible');
     document.getElementById('roulette-screen').classList.add('visible');
+    if (window.isAdmin) {
+        document.getElementById('spin-btn').style.display = 'none';
+        document.getElementById('admin-roulette-msg').style.display = 'block';
+    } else {
+        document.getElementById('spin-btn').style.display = '';
+        document.getElementById('admin-roulette-msg').style.display = 'none';
+    }
     refreshRoulette();
 }
 
@@ -77,6 +84,21 @@ function drawRoulette() {
     const cy = canvas.height / 2;
     const radius = (canvas.width / 2) - 10;
     const count = slots.length;
+
+    if (count === 0) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.fillStyle = '#333';
+        ctx.textAlign = 'center';
+        ctx.font = 'bold ' + (size / 26) + 'px sans-serif';
+        ctx.fillText('Todos los regalos', cx, cy - 10);
+        ctx.fillText('se agotaron', cx, cy + 20);
+        return;
+    }
+
     const sliceAngle = (2 * Math.PI) / count;
 
     for (let i = 0; i < count; i++) {
@@ -116,7 +138,10 @@ function drawRoulette() {
 }
 
 function spinRoulette() {
-    if (isSpinning || slots.length === 0) return;
+    if (isSpinning || slots.length === 0) {
+        if (slots.length === 0) alert('Todos los regalos se agotaron.');
+        return;
+    }
     isSpinning = true;
 
     var spinBtn = document.getElementById('spin-btn');
@@ -169,7 +194,7 @@ function saveGift(gift) {
             if (remaining <= 0) {
                 throw { giftExhausted: true };
             }
-            transaction.update(inventoryRef, { remaining: remaining - 1 });
+            transaction.set(inventoryRef, { remaining: remaining - 1 }, { merge: true });
             transaction.set(userRef, {
                 displayName: window.currentUser.displayName,
                 email: window.currentUser.email,
