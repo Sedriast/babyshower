@@ -201,7 +201,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 1.25rem;
     padding: 1rem;
     z-index: 9999;
 }
@@ -233,18 +233,10 @@ body {
     color: #333;
 }
 
-#event-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-    max-width: 440px;
-    background: #fff;
-    border-radius: 18px;
-    padding: 1.5rem 1.75rem 1.75rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-    text-align: center;
+.gift-info {
+    margin-top: 2rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid #eaeaea;
 }
 
 .event-heading {
@@ -267,13 +259,12 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.25rem;
     padding: 0.75rem 1.75rem;
     font-size: clamp(0.95rem, 2vw, 1.05rem);
     font-weight: 600;
-    color: #fff;
-    background: linear-gradient(135deg, #34a853 0%, #1b8a3e 100%);
-    box-shadow: 0 4px 20px rgba(52, 168, 83, 0.4);
+    color: #2e7d32;
+    background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+    box-shadow: 0 4px 20px rgba(120, 200, 120, 0.4);
     border-radius: 50px;
     text-decoration: none;
     cursor: pointer;
@@ -288,7 +279,7 @@ body {
 
 #maps-btn:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 30px rgba(52, 168, 83, 0.6);
+    box-shadow: 0 6px 30px rgba(120, 200, 120, 0.6);
 }
 
 #maps-btn:active {
