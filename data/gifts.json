@@ -1,7 +1,7 @@
 [
-	{ "id": 1, "name": "Pañal etapa 2 + pañitos", "emoji": "\uD83D\uDC76", "count": 3 },
-	{ "id": 2, "name": "Pañal etapa 3 + pañitos", "emoji": "\uD83C\uDF7C", "count": 5 },
-	{ "id": 3, "name": "Pañal etapa 4 + pañitos", "emoji": "\uD83E\uDDF7", "count": 3 },
+	{ "id": 1, "name": "Pañal etapa 2 + pañitos", "emoji": "\uD83D\uDC76", "count": 8 },
+	{ "id": 2, "name": "Pañal etapa 3 + pañitos", "emoji": "\uD83C\uDF7C", "count": 10 },
+	{ "id": 3, "name": "Pañal etapa 4 + pañitos", "emoji": "\uD83E\uDDF7", "count": 8 },
 	{ "id": 4, "name": "Bañera", "emoji": "\uD83D\uDEC1", "count": 1 },
 	{ "id": 5, "name": "Pijama 3 a 6 meses + medias", "emoji": "\uD83E\uDDE6", "count": 1 },
 	{ "id": 6, "name": "Pijama 6 a 12 meses + medias", "emoji": "\uD83C\uDF19", "count": 2 },
